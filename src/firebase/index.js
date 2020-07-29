@@ -64,18 +64,18 @@ class FirebaseApi {
         return data;
     }
 
-    async send_message(from_uid, from_username, to_uid, to_username, msg, chat_id) {
+    async send_message(from_uid, from_username, to_uid, to_username, msg, chat_id, image) {
         try {
             if (chat_id) {
                 // console.warn(key, key._W)
                 await firebase.database().ref("chats").child(chat_id).push({
-                    from_uid, from_username, msg,
+                    from_uid, from_username, msg, image,
                     date: moment().unix()
                 })
             } else {
                 const res = await firebase.database().ref("chats").push({
                     "0": {
-                        from_uid, from_username, msg,
+                        from_uid, from_username, msg, image,
                         date: moment().unix()
                     }
                 })
