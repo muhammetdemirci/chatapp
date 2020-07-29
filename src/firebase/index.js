@@ -23,6 +23,10 @@ class FirebaseApi {
         }
     }
 
+    get ref() {
+        return firebase.database().ref('chats');
+    }
+
     async createAccount(username) {
 
         try {
