@@ -2,7 +2,7 @@
 import * as firebase from 'firebase';
 import '@firebase/firestore'
 import { config } from './config';
-
+import moment from 'moment';
 
 const firebaseConfig = {
     apiKey: config.apiKey,
@@ -57,13 +57,13 @@ class FirebaseApi {
                 // console.warn(key, key._W)
                 await firebase.database().ref("chats").child(key).push({
                     from_uid, from_username, to_uid, to_username, msg,
-                    // date: new Date().getDate(),
+                    date: moment().unix()
                 })
             } else {
                 const res = await firebase.database().ref("chats").push({
                     "0": {
                         from_uid, from_username, to_uid, to_username, msg,
-                        // date: new Date().getDate(),// TOO! ad moment js
+                        date: moment().unix()
                     }
                 })
                 await firebase.database().ref("users").child(from_uid).child("chats").push({
