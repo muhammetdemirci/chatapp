@@ -1,12 +1,14 @@
 import React from 'react';
 import {
     SafeAreaView, KeyboardAvoidingView, TextInput,
-    ScrollView, View, Text, Platform
+    ScrollView, View, Text, Platform, Dimensions
 } from 'react-native';
 import { IconButton } from "../../components";
 import firebase from '../../firebase';
 import { connect } from "react-redux";
 import * as MessageCard from "./messageCard";
+
+const width = Dimensions.get("window").width
 
 class ChatScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -48,17 +50,18 @@ class ChatScreen extends React.Component {
 
 
     async onSend(msg) {
-        const { navigation, user_uid, from_username } = this.props;
-        const { uid, username } = navigation.state.params.data
-        const chat_id = await firebase.send_message(user_uid, from_username, uid, username, msg, this.state.chat_id)
-        if (chat_id) {
-            this.setState({ chat_id })
+        if (msg) {
+            const { navigation, user_uid, from_username } = this.props;
+            const { uid, username } = navigation.state.params.data
+            const chat_id = await firebase.send_message(user_uid, from_username, uid, username, msg, this.state.chat_id)
+            if (chat_id) {
+                this.setState({ chat_id })
+            }
+            this.setState({ message: '' })
         }
-        this.setState({ message: '' })
     }
 
     render() {
-        console.warn('messages', this.state.messages)
         return (<SafeAreaView style={{ flex: 1 }}>
             <KeyboardAvoidingView
                 style={{ flex: 1, backgroundColor: '#f4f4f4' }}
@@ -77,18 +80,26 @@ class ChatScreen extends React.Component {
                     </View>
                 </ScrollView>
 
-                <TextInput
-                    autoCorrect={false}
-                    returnKeyType={'send'}
-                    onChangeText={(message) => this.setState({ message })}
-                    onSubmitEditing={() => this.onSend(this.state.message)}
-                    value={this.state.message}
-                    style={{
-                        height: 50, width: '100%',
-                        backgroundColor: '#fff',
-                        // marginBottom: 70,
-                        paddingLeft: 10, justifySelf: 'flex-end', color: 'black'
-                    }} placeholder={'Enter text here'} />
+                <View style={{ flexDirection: 'row' }} >
+                    <TextInput
+                        autoCorrect={false}
+                        returnKeyType={'send'}
+                        onChangeText={(message) => this.setState({ message })}
+                        onSubmitEditing={() => this.onSend(this.state.message)}
+                        value={this.state.message}
+                        style={{
+                            height: 50, width: width - 50,
+                            backgroundColor: '#fff',
+                            // marginBottom: 70,
+                            paddingLeft: 10, justifySelf: 'flex-end', color: 'black'
+                        }} placeholder={'Enter text here'} />
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                        <IconButton
+                            onPress={() => this.onSend(this.state.message)}
+                            iconStyle={{ color: 'blue' }}
+                            size={30} name={'send'} />
+                    </View>
+                </View>
             </KeyboardAvoidingView>
         </SafeAreaView>);
     }
