@@ -16,7 +16,7 @@ class LoginScreen extends React.Component {
     handle_register() {
         const { username } = this.state;
         if (username.length > 2) {
-            this.props.register('username')
+            this.props.register(username)
         }
         else
             this.setState({ error: true })

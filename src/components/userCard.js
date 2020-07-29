@@ -7,13 +7,13 @@ const width = Dimensions.get("window").width
 class UserCard extends React.Component {
 
     get avatar() {
-        return this.props.username[0] + this.props.username[1]
+        return this.props.data.username[0] + this.props.data.username[1]
     }
 
     render() {
 
         return (<TouchableOpacity
-            onPress={() => this.props.onPress(this.props.username)}
+            onPress={() => this.props.onPress(this.props.data)}
             style={{
                 backgroundColor: 'white', marginVertical: 2, flexDirection: 'row',
                 alignItems: 'center',
@@ -33,7 +33,7 @@ class UserCard extends React.Component {
                 }} >{this.avatar}</Text>
             </View>
             <Text style={{ margin: 8, fontSize: 16 }} >
-                {this.props.username}
+                {this.props.data.username}
             </Text>
         </TouchableOpacity>)
     }

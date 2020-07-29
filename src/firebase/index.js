@@ -28,12 +28,11 @@ class FirebaseApi {
         try {
             const data = await firebase.auth().signInAnonymously()
             if (data) {
-                const user_uid = data.user.uid;
-                await firebase.database().ref("users").push({
-                    uid: user_uid,
-                    username: username
+                const res = await firebase.database().ref("users").push({
+                    username: username,
+                    chats: []
                 })
-                return user_uid;
+                return res.key;
             }
         } catch (error) {
             console.warn('error on createAccount ', error);
@@ -44,10 +43,48 @@ class FirebaseApi {
     async getUsers() {
         const snap = await firebase.database().ref('users').once('value');
         var data = [];
+        // const json = snap.toJSON()
         snap.forEach(ss => {
-            data.push(ss.val());
+            // console.warn('ss',ss)
+            data.push({ username: ss.val().username, uid: ss.key });
         });
         return data;
+    }
+
+    async send_message(from_uid, from_username, to_uid, to_username, msg) {
+        try {
+            console.warn("send_message", from_uid, from_username, to_uid, to_username)
+            const res = await firebase.database().ref("chats").push({
+                messages: {
+                    from_uid, from_username, to_uid, to_username, msg,
+                    date: new Date(),
+                }
+            })
+            await firebase.database().ref("users").child(from_uid).child("chats").push({
+                id: res.key, username: to_username
+            })
+
+            await firebase.database().ref("users").child(to_uid).child("chats").push({
+                id: res.key, username: from_username
+            })
+
+            console.warn('ress', res)
+        } catch (error) {
+            console.warn('error on send_message', error);
+        }
+    }
+
+    async send_message_then(from_uid, from_username, to_uid, to_username, msg) {
+        try {
+            console.warn("send_message", from_uid, from_username, to_uid, to_username)
+            const res = await firebase.database().refFromURL("https://chatapp-24922.firebaseio.com/chats/-MDPaLoG_cB0qQeu_EWK").ref("chats").push({
+                from_uid, from_username, to_uid, to_username, msg,
+                date: new Date(),
+            })
+            console.warn('ress', res)
+        } catch (error) {
+            console.warn('error on send_message', error);
+        }
     }
 }
 

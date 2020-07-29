@@ -8,7 +8,7 @@ export function register(username) {
             res => dispatch({
                 type: AUTH.REGISTER_REQ,
                 username,
-                uuid: res
+                user_uid: res
             })
         )
     }

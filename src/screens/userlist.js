@@ -22,7 +22,6 @@ class UserListScreen extends React.Component {
     render() {
 
         const { users, loading } = this.state;
-        console.warn('users', users)
         if (loading)
             return <Loading />;
 
@@ -32,8 +31,8 @@ class UserListScreen extends React.Component {
         }} >
             {
                 this.state.users.map((data) =>
-                    <UserCard key={data.username} onPress={(username) => this.props.navigation.navigate('Chat', { username })}
-                        username={data.username} />)
+                    <UserCard key={data.username} onPress={(data) => this.props.navigation.navigate('Chat', { data })}
+                        data={data} />)
             }
         </View>);
     }

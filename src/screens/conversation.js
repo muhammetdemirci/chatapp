@@ -18,12 +18,12 @@ class ConversationScreen extends React.Component {
             backgroundColor: '#f4f4f4'
 
         }} >
-            <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
+            {/* <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
                 username={'Ali'} />
             <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
                 username={'At'} />
             <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
-                username={'Muhammet'} />
+                username={'Muhammet'} /> */}
         </View>);
     }
 }
