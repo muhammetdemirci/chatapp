@@ -1,12 +1,20 @@
 import React from 'react';
-import { View, Text } from 'react-native'
-import { AppNavigator } from './navigator';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import Main from './Main';
+import { store, persistor } from './store';
 
-class AppScreen extends React.Component {
+class App extends React.Component {
 
   render() {
-    return (<AppNavigator />);
+    return (
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor} >
+          <Main />
+        </PersistGate>
+      </Provider>
+    );
   }
 }
 
-export default AppScreen;
+export default App;
