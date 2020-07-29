@@ -31,7 +31,7 @@ class FirebaseApi {
                     console.warn("user", user_uid)
                     firebase.database().ref("users").push({
                         uid: user_uid,
-                        user_name: username
+                        username: username
                     }).then(() => {
                         console.warn('collection succesfully done')
                     }).catch((error) => {
@@ -44,6 +44,15 @@ class FirebaseApi {
                 })
 
         });
+    }
+
+    async getUsers() {
+        const snap = await firebase.database().ref('users').once('value');
+        var data = [];
+        snap.forEach(ss => {
+            data.push(ss.val());
+        });
+        return data;
     }
 }
 

@@ -18,7 +18,7 @@ class LoginScreen extends React.Component {
         const { username } = this.state;
         if (username.length > 2) {
             firebaseApi.createAccount(username);
-            // this.props.register('username')
+            this.props.register('username')
         }
         else
             this.setState({ error: true })
