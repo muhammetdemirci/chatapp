@@ -1,4 +1,5 @@
 import IconButton from './iconButton';
 import Button from './button';
+import UserCard from './userCard';
 
-export { IconButton, Button };
+export { IconButton, Button, UserCard };
