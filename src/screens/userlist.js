@@ -1,21 +1,20 @@
 import React from 'react';
-import { View, Text } from 'react-native'
-import { Button } from '../components';
+import { View } from 'react-native'
+import { UserCard } from '../components';
 
 class UserListScreen extends React.Component {
 
     render() {
-        return (<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-            <Text>UserListScreen # TODO</Text>
-            <Button
-                onPress={() => this.props.navigation.navigate('Chat')}
-                title={'Start to chat'}
-                containerStyle={{
-                    backgroundColor: 'blue',
-                    margin: 8, padding: 8, justifyContent: 'center', alignItems: 'center'
-                }}
-                titleStyle={{ color: 'white' }}
-            />
+        return (<View style={{
+            flex: 1,
+            backgroundColor: '#f4f4f4'
+        }} >
+            <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
+                username={'Ali'} />
+            <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
+                username={'At'} />
+            <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
+                username={'Muhammet'} />
         </View>);
     }
 }
