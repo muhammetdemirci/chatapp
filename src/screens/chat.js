@@ -13,11 +13,18 @@ class ChatScreen extends React.Component {
         };
     };
 
+    state = {
+        key: ''
+    }
 
-    onSend(msg) {
+
+    async onSend(msg) {
         const { navigation, user_uid, from_username } = this.props;
         const { uid, username } = navigation.state.params.data
-        firebase.send_message(user_uid, from_username, uid, username, msg)
+        const key = await firebase.send_message(user_uid, from_username, uid, username, msg, this.state.key)
+        if (key) {
+            this.setState({ key })
+        }
     }
 
     render() {

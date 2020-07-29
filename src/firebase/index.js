@@ -51,24 +51,31 @@ class FirebaseApi {
         return data;
     }
 
-    async send_message(from_uid, from_username, to_uid, to_username, msg) {
+    async send_message(from_uid, from_username, to_uid, to_username, msg, key) {
         try {
-            console.warn("send_message", from_uid, from_username, to_uid, to_username)
-            const res = await firebase.database().ref("chats").push({
-                messages: {
+            if (key) {
+                // console.warn(key, key._W)
+                await firebase.database().ref("chats").child(key).push({
                     from_uid, from_username, to_uid, to_username, msg,
-                    date: new Date(),
-                }
-            })
-            await firebase.database().ref("users").child(from_uid).child("chats").push({
-                id: res.key, username: to_username
-            })
+                    // date: new Date().getDate(),
+                })
+            } else {
+                const res = await firebase.database().ref("chats").push({
+                    "0": {
+                        from_uid, from_username, to_uid, to_username, msg,
+                        // date: new Date().getDate(),// TOO! ad moment js
+                    }
+                })
+                await firebase.database().ref("users").child(from_uid).child("chats").push({
+                    id: res.key, username: to_username
+                })
 
-            await firebase.database().ref("users").child(to_uid).child("chats").push({
-                id: res.key, username: from_username
-            })
+                await firebase.database().ref("users").child(to_uid).child("chats").push({
+                    id: res.key, username: from_username
+                })
 
-            console.warn('ress', res)
+                return res.key;
+            }
         } catch (error) {
             console.warn('error on send_message', error);
         }
