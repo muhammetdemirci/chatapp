@@ -67,28 +67,15 @@ class FirebaseApi {
                     }
                 })
                 await firebase.database().ref("users").child(from_uid).child("chats").push({
-                    id: res.key, username: to_username
+                    to_username
                 })
 
                 await firebase.database().ref("users").child(to_uid).child("chats").push({
-                    id: res.key, username: from_username
+                    from_username
                 })
 
                 return res.key;
             }
-        } catch (error) {
-            console.warn('error on send_message', error);
-        }
-    }
-
-    async send_message_then(from_uid, from_username, to_uid, to_username, msg) {
-        try {
-            console.warn("send_message", from_uid, from_username, to_uid, to_username)
-            const res = await firebase.database().refFromURL("https://chatapp-24922.firebaseio.com/chats/-MDPaLoG_cB0qQeu_EWK").ref("chats").push({
-                from_uid, from_username, to_uid, to_username, msg,
-                date: new Date(),
-            })
-            console.warn('ress', res)
         } catch (error) {
             console.warn('error on send_message', error);
         }
