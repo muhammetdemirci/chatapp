@@ -4,7 +4,6 @@ import { Button } from "../components";
 import { bindActionCreators } from "redux";
 import { connect } from 'react-redux';
 import { authActions } from "../actions";
-import firebaseApi from '../firebase';
 
 const width = Dimensions.get("window").width
 
@@ -17,7 +16,6 @@ class LoginScreen extends React.Component {
     handle_register() {
         const { username } = this.state;
         if (username.length > 2) {
-            firebaseApi.createAccount(username);
             this.props.register('username')
         }
         else

@@ -24,26 +24,21 @@ class FirebaseApi {
     }
 
     async createAccount(username) {
-        return new Promise((resolve, reject) => {
-            firebase.auth()
-                .signInAnonymously().then((data) => {
-                    const user_uid = data.user.uid
-                    console.warn("user", user_uid)
-                    firebase.database().ref("users").push({
-                        uid: user_uid,
-                        username: username
-                    }).then(() => {
-                        console.warn('collection succesfully done')
-                    }).catch((error) => {
-                        console.warn(" collection error ", error)
-                    })
-                }).then(() => {
-                    console.warn('succesfully done')
-                }).catch((error) => {
-                    console.warn("error ", error)
-                })
 
-        });
+        try {
+            const data = await firebase.auth().signInAnonymously()
+            if (data) {
+                const user_uid = data.user.uid;
+                await firebase.database().ref("users").push({
+                    uid: user_uid,
+                    username: username
+                })
+                return user_uid;
+            }
+        } catch (error) {
+            console.warn('error on createAccount ', error);
+        }
+
     }
 
     async getUsers() {

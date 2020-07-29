@@ -2,14 +2,15 @@ import { AUTH } from '../constants/actionTypes';
 
 const initialState = {
     username: '',
-    is_user_logged_in: false
+    is_user_logged_in: false,
+    user_uid: '',
 }
 
 const redObj = {
     [AUTH.REGISTER_REQ]: (state, action) => {
-        console.warn('action', action.username)
         return Object.assign({}, state, {
             username: action.username,
+            user_uid: action.user_uid,
             is_user_logged_in: true,
         });
     }
