@@ -4,7 +4,6 @@ import {
     ScrollView, View, Text, Platform
 } from 'react-native';
 import { IconButton } from "../../components";
-import { GiftedChat } from 'react-native-gifted-chat'
 import firebase from '../../firebase';
 import { connect } from "react-redux";
 import * as MessageCard from "./messageCard";
