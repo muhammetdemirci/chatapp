@@ -8,8 +8,12 @@ import firebase from '../../firebase';
 import { connect } from "react-redux";
 import MessageCard from "./messageCard";
 import ImagePicker from 'react-native-image-picker';
+import Geolocation from '@react-native-community/geolocation';
+import firebaseApi from '../../firebase';
 
 const width = Dimensions.get("window").width
+
+const KEY_LOCATION = 'location'
 
 class ChatScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -67,10 +71,23 @@ class ChatScreen extends React.Component {
         }
     }
 
+    share_location() {
+        Geolocation.getCurrentPosition(
+            position => {
+                const initialPosition = JSON.stringify(position);
+                firebaseApi.shareLocation(this.state.chat_id, initialPosition)
+                console.warn(initialPosition)
+            },
+            error => Alert.alert('Error', JSON.stringify(error)),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+    }
+
     handle_choose_image() {
         // More info on all the options is below in the API Reference... just some common use cases shown here
         const options = {
-            title: 'Select Photo',
+            title: '',
+            customButtons: [{ name: KEY_LOCATION, title: 'Share Location' }],
             storageOptions: {
                 skipBackup: true,
                 path: 'images',
@@ -90,6 +107,9 @@ class ChatScreen extends React.Component {
                 console.log('ImagePicker Error: ', response.error);
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
+                if (response.customButton === KEY_LOCATION) {
+                    this.share_location()
+                }
             } else {
                 // const source = { uri: response.uri };
 

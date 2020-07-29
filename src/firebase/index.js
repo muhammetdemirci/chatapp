@@ -67,7 +67,6 @@ class FirebaseApi {
     async send_message(from_uid, from_username, to_uid, to_username, msg, chat_id, image) {
         try {
             if (chat_id) {
-                // console.warn(key, key._W)
                 await firebase.database().ref("chats").child(chat_id).push({
                     from_uid, from_username, msg, image,
                     date: moment().unix()
@@ -106,6 +105,13 @@ class FirebaseApi {
             data.push({ username: ss.val().username, chat_id: ss.val().chat_id });
         });
         return data;
+    }
+
+    async shareLocation(chat_id, location) {
+        await firebase.database().ref("chats").child(chat_id).push({
+            chat_id, location,
+            date: moment().unix()
+        })
     }
 }
 
