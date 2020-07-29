@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native'
-import { IconButton, UserCard } from '../components';
+import { ScrollView } from 'react-native'
+import { IconButton, UserCard, Loading } from '../components';
+import firebaseApi from '../firebase';
+import { connect } from "react-redux";
 
 class ConversationScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -12,20 +14,44 @@ class ConversationScreen extends React.Component {
         };
     };
 
+    state = {
+        chats: [],
+    }
+
+    componentDidMount() {
+        this.fetch();
+    }
+
+    async fetch() {
+        this.setState({ loading: true })
+        const res = await firebaseApi.getChats(this.props.user_uid)
+        console.warn('chats', res)
+        this.setState({ chats: res, loading: false });
+    }
+
     render() {
-        return (<View style={{
+        const { chats, loading } = this.state;
+        if (loading)
+            return <Loading />;
+
+        return (<ScrollView style={{
             flex: 1,
             backgroundColor: '#f4f4f4'
-
         }} >
-            {/* <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
-                username={'Ali'} />
-            <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
-                username={'At'} />
-            <UserCard onPress={(username) => this.props.navigation.navigate('Chat', { username })}
-                username={'Muhammet'} /> */}
-        </View>);
+            {
+                this.state.chats.map((data) =>
+                    <UserCard key={data.username} onPress={(data) => this.props.navigation.navigate('Chat', { data, chat_id: data.id })}
+                        data={data} />)
+            }
+        </ScrollView>);
     }
 }
 
-export default ConversationScreen;
+function mapStateToProps(state) {
+    return {
+        user_uid: state.auth.user_uid
+    }
+}
+
+
+export default connect(mapStateToProps, {})(ConversationScreen);

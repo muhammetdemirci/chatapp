@@ -1,10 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native'
 import { GiftedChat } from 'react-native-gifted-chat'
 import firebase from '../firebase';
-import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
-import { func } from 'prop-types';
 
 class ChatScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -14,16 +11,17 @@ class ChatScreen extends React.Component {
     };
 
     state = {
-        key: ''
+        chat_id: this.props.navigation.state.params.data.chat_id
     }
 
 
     async onSend(msg) {
         const { navigation, user_uid, from_username } = this.props;
         const { uid, username } = navigation.state.params.data
-        const key = await firebase.send_message(user_uid, from_username, uid, username, msg, this.state.key)
-        if (key) {
-            this.setState({ key })
+        console.warn(uid)
+        const chat_id = await firebase.send_message(user_uid, from_username, uid, username, msg, this.state.chat_id)
+        if (chat_id) {
+            this.setState({ chat_id })
         }
     }
 
@@ -45,10 +43,5 @@ function mapStateToProps(state) {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
 
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);
+export default connect(mapStateToProps, {})(ChatScreen);

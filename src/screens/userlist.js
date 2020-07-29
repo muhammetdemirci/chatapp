@@ -1,7 +1,8 @@
 import React from 'react';
-import { View } from 'react-native'
+import { ScrollView } from 'react-native'
 import { UserCard, Loading } from '../components';
 import firebaseApi from '../firebase';
+import { connect } from "react-redux";
 
 class UserListScreen extends React.Component {
     state = {
@@ -15,7 +16,7 @@ class UserListScreen extends React.Component {
 
     async fetch() {
         this.setState({ loading: true })
-        const res = await firebaseApi.getUsers();
+        const res = await firebaseApi.getUsers(this.props.user_uid);
         this.setState({ users: res, loading: false });
     }
 
@@ -25,7 +26,7 @@ class UserListScreen extends React.Component {
         if (loading)
             return <Loading />;
 
-        return (<View style={{
+        return (<ScrollView style={{
             flex: 1,
             backgroundColor: '#f4f4f4'
         }} >
@@ -34,8 +35,14 @@ class UserListScreen extends React.Component {
                     <UserCard key={data.username} onPress={(data) => this.props.navigation.navigate('Chat', { data })}
                         data={data} />)
             }
-        </View>);
+        </ScrollView>);
     }
 }
 
-export default UserListScreen;
+function mapStateToProps(state) {
+    return {
+        user_uid: state.auth.user_uid,
+    }
+}
+
+export default connect(mapStateToProps, {})(UserListScreen);

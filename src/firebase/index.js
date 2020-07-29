@@ -40,40 +40,50 @@ class FirebaseApi {
 
     }
 
-    async getUsers() {
+    async getUsers(user_uid) {
         const snap = await firebase.database().ref('users').once('value');
+        const active_chats = await this.getChats(user_uid);
+
         var data = [];
         // const json = snap.toJSON()
         snap.forEach(ss => {
             // console.warn('ss',ss)
-            data.push({ username: ss.val().username, uid: ss.key });
+            var isExist = false;
+            for (var i = 0; i < active_chats.length; i += 1) {
+                if (active_chats[i].username === ss.val().username)
+                    isExist = true;
+            }
+            if (user_uid != ss.key && !isExist)
+                data.push({ username: ss.val().username, uid: ss.key });
         });
+        console.warn(data)
         return data;
     }
 
-    async send_message(from_uid, from_username, to_uid, to_username, msg, key) {
+    async send_message(from_uid, from_username, to_uid, to_username, msg, chat_id) {
         try {
-            if (key) {
+            if (chat_id) {
                 // console.warn(key, key._W)
-                await firebase.database().ref("chats").child(key).push({
-                    from_uid, from_username, to_uid, to_username, msg,
+                await firebase.database().ref("chats").child(chat_id).push({
+                    from_uid, from_username, msg,
                     date: moment().unix()
                 })
             } else {
                 const res = await firebase.database().ref("chats").push({
                     "0": {
-                        from_uid, from_username, to_uid, to_username, msg,
+                        from_uid, from_username, msg,
                         date: moment().unix()
                     }
                 })
+                console.log('send_message:chat_id', res.key);
                 await firebase.database().ref("users").child(from_uid).child("chats").push({
-                    id: res.key,
-                    to_username
+                    chat_id: res.key,
+                    username: to_username
                 })
 
                 await firebase.database().ref("users").child(to_uid).child("chats").push({
-                    id: res.key,
-                    from_username,
+                    chat_id: res.key,
+                    username: from_username,
                 })
 
                 return res.key;
@@ -81,6 +91,17 @@ class FirebaseApi {
         } catch (error) {
             console.warn('error on send_message', error);
         }
+    }
+
+    async getChats(uid) {
+        const snap = await firebase.database().ref('users').child(uid).child("chats").once("value")
+        var data = [];
+        // const json = snap.toJSON()
+        snap.forEach(ss => {
+            // console.warn('ss',ss)
+            data.push({ username: ss.val().username, chat_id: ss.val().chat_id });
+        });
+        return data;
     }
 }
 
