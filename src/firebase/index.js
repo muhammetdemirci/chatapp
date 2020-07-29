@@ -67,11 +67,13 @@ class FirebaseApi {
                     }
                 })
                 await firebase.database().ref("users").child(from_uid).child("chats").push({
+                    id: res.key,
                     to_username
                 })
 
                 await firebase.database().ref("users").child(to_uid).child("chats").push({
-                    from_username
+                    id: res.key,
+                    from_username,
                 })
 
                 return res.key;
