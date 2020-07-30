@@ -76,11 +76,11 @@ class ChatScreen extends React.Component {
     share_location() {
         Geolocation.getCurrentPosition(
             position => {
-                const initialPosition = JSON.stringify(position);
+                const initialPosition = position;
                 const { from_username } = this.props;
 
                 firebaseApi.shareLocation(this.state.chat_id, from_username, initialPosition)
-                console.warn(initialPosition)
+                // console.warn('log',initialPosition.coords)
             },
             error => Alert.alert('Error', JSON.stringify(error)),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },

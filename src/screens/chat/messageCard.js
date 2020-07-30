@@ -33,11 +33,9 @@ class MessageCard extends React.Component {
 
             {
                 image ? <View style={{
-                    // alignItems:'flex-end'
                 }} >
                     <Image
                         source={{ uri: image.uri }}
-                        // source={{ uri: "https://images.unsplash.com/photo-1531804055935-76f44d7c3621?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" }}
                         style={{
                             width: 300, height: 200,
                             resizeMode: 'center', marginBottom: 0,

@@ -1,28 +1,27 @@
 import React from 'react';
-import { View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 class MapScreen extends React.Component {
     render() {
-        console.warn('location', this.props.navigation.state.params.location)
+        const { location, from_username } = this.props.navigation.state.params
+
         return (
             <MapView
                 style={{ flex: 1 }}
                 initialRegion={{
-                    latitude: 37.78825,
-                    longitude: -122.4324,
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
             >
                 <Marker
                     coordinate={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
                     }}
-                    title={'Muhammet'}
+                    title={from_username}
                 />
-
             </MapView>)
     }
 }
