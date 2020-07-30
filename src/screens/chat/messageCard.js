@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import moment from 'moment'
 import { COLORS } from '../../color';
 import { connect } from "react-redux";
 
 class MessageCard extends React.Component {
+
+
     render() {
         const { username, message: {
-            date, from_username, message, image
+            date, from_username, message, image, location
         } } = this.props
 
         const alignItems = username === from_username ? "flex-end" : "flex-start";
@@ -21,6 +23,12 @@ class MessageCard extends React.Component {
             alignItems,
             marginHorizontal: 4,
         }}>
+            {
+                location ? <TouchableOpacity><Image
+                    style={{ width: 160, height: 160, resizeMode: 'contain' }}
+                    source={require("../../assets/map.png")} /></TouchableOpacity> : null
+            }
+
             {
                 image ? <View style={{
                     // alignItems:'flex-end'
@@ -37,17 +45,20 @@ class MessageCard extends React.Component {
                     />
                 </View> : null
             }
-            <View style={{
-                backgroundColor: msgBackgroundColor,
-                padding: 8,
-                marginVertical: 4,
-                borderRadius: 8
-            }} >
+            {
+                message ? <View style={{
+                    backgroundColor: msgBackgroundColor,
+                    padding: 8,
+                    marginVertical: 4,
+                    borderRadius: 8
+                }} >
 
-                <Text style={{ color: 'white', fontSize: 18 }} >
-                    {message}
-                </Text>
-            </View>
+                    <Text style={{ color: 'white', fontSize: 18 }} >
+                        {message}
+                    </Text>
+                </View> : null
+            }
+
             <Text style={{
                 color: COLORS.GRAY,
                 fontSize: 12,

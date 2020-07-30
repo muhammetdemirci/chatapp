@@ -41,7 +41,8 @@ class ChatScreen extends React.Component {
                         date: ss.val().date,
                         from_username: ss.val().from_username,
                         message: ss.val().msg,
-                        image: ss.val().image
+                        image: ss.val().image,
+                        location : ss.val().location,
                     })
                 });
                 this.setState({ messages: data })
