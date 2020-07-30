@@ -9,12 +9,14 @@ import {
     ConversationScreen,
     UserlistScreen,
     ChatScreen,
+    MapScreen,
 } from './screens';
 
 const mainNavigator = createStackNavigator({
     Conversation: ConversationScreen,
     Userlist: UserlistScreen,
     Chat: ChatScreen,
+    Map: MapScreen,
 })
 
 

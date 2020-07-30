@@ -42,7 +42,7 @@ class ChatScreen extends React.Component {
                         from_username: ss.val().from_username,
                         message: ss.val().msg,
                         image: ss.val().image,
-                        location : ss.val().location,
+                        location: ss.val().location,
                     })
                 });
                 this.setState({ messages: data })
@@ -140,7 +140,7 @@ class ChatScreen extends React.Component {
                     onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}
                     style={{ flex: 1 }}>
                     {this.state.messages.map((message, index) => (
-                        <MessageCard key={index} message={message} />
+                        <MessageCard navigation={this.props.navigation} key={index} message={message} />
                     ))}
                 </ScrollView>
 

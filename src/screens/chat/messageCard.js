@@ -24,9 +24,11 @@ class MessageCard extends React.Component {
             marginHorizontal: 4,
         }}>
             {
-                location ? <TouchableOpacity><Image
-                    style={{ width: 160, height: 160, resizeMode: 'contain' }}
-                    source={require("../../assets/map.png")} /></TouchableOpacity> : null
+                location ? <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate('Map', { location, from_username })}
+                ><Image
+                        style={{ width: 160, height: 160, resizeMode: 'contain' }}
+                        source={require("../../assets/map.png")} /></TouchableOpacity> : null
             }
 
             {
