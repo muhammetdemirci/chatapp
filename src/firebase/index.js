@@ -60,7 +60,6 @@ class FirebaseApi {
             if (user_uid != ss.key && !isExist)
                 data.push({ username: ss.val().username, uid: ss.key });
         });
-        console.warn(data)
         return data;
     }
 
@@ -78,7 +77,6 @@ class FirebaseApi {
                         date: moment().unix()
                     }
                 })
-                console.log('send_message:chat_id', res.key);
                 await firebase.database().ref("users").child(from_uid).child("chats").push({
                     chat_id: res.key,
                     username: to_username
@@ -99,9 +97,7 @@ class FirebaseApi {
     async getChats(uid) {
         const snap = await firebase.database().ref('users').child(uid).child("chats").once("value")
         var data = [];
-        // const json = snap.toJSON()
         snap.forEach(ss => {
-            // console.warn('ss',ss)
             data.push({ username: ss.val().username, chat_id: ss.val().chat_id });
         });
         return data;

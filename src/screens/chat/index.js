@@ -31,12 +31,15 @@ class ChatScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.listen_chat();
+
+    }
+
+    listen_chat() {
         try {
             firebase.ref.child(this.state.chat_id).on("value", snapshot => {
                 var data = [];
-                // const json = snap.toJSON()
                 snapshot.forEach(ss => {
-
                     data.push({
                         date: ss.val().date,
                         from_username: ss.val().from_username,
@@ -50,15 +53,11 @@ class ChatScreen extends React.Component {
         } catch (error) {
 
         }
-
     }
-
-
 
     componentWillUnmount() {
         firebase.ref.child(this.state.chat_id).off()
     }
-
 
     async onSend(msg) {
         const image = this.state.image
@@ -69,6 +68,7 @@ class ChatScreen extends React.Component {
             const chat_id = await firebase.send_message(user_uid, from_username, uid, username, msg, this.state.chat_id, image)
             if (chat_id) {
                 this.setState({ chat_id })
+                this.listen_chat()
             }
         }
     }
@@ -115,8 +115,6 @@ class ChatScreen extends React.Component {
                     this.share_location()
                 }
             } else {
-                // const source = { uri: response.uri };
-
                 // You can also display the image using data:
                 const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
@@ -147,13 +145,11 @@ class ChatScreen extends React.Component {
                 <View style={{
                     justifyContent: 'center',
                     alignItems: 'center',
-                    // backgroundColor: 'white'
                 }} >
                     {
                         this.state.image ? <Image
                             onLoadEnd={() => this.scrollView.scrollToEnd({ animated: true })}
                             source={this.state.image}
-                            // source={{ uri: "https://images.unsplash.com/photo-1531804055935-76f44d7c3621?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" }}
                             style={{ width: "100%", height: 200, resizeMode: 'contain' }}
                         /> : null
                     }
@@ -176,8 +172,7 @@ class ChatScreen extends React.Component {
                         style={{
                             height: 50, width: width - 100,
                             backgroundColor: '#fff',
-                            // marginBottom: 70,
-                            paddingLeft: 10, justifySelf: 'flex-end', color: 'black'
+                            paddingLeft: 10, color: 'black'
                         }} placeholder={'Enter text here'} />
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                         <IconButton

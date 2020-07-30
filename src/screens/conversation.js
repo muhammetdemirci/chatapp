@@ -26,7 +26,6 @@ class ConversationScreen extends React.Component {
     async fetch() {
         this.setState({ loading: true })
         const res = await firebaseApi.getChats(this.props.user_uid)
-        console.warn('chats', res)
         this.setState({ chats: res, loading: false });
     }
 
