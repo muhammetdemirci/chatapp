@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
+import { COLORS } from '../color';
 
 const width = Dimensions.get("window").width
 
@@ -15,7 +16,7 @@ class UserCard extends React.Component {
         return (<TouchableOpacity
             onPress={() => this.props.onPress(this.props.data)}
             style={{
-                backgroundColor: 'white', marginVertical: 2, flexDirection: 'row',
+                backgroundColor: COLORS.WHITE, marginVertical: 2, flexDirection: 'row',
                 alignItems: 'center',
                 width: width - 8
             }} >
@@ -29,7 +30,7 @@ class UserCard extends React.Component {
             }}>
                 <Text style={{
                     fontSize: 18, fontWeight: '600',
-                    color: 'blue'
+                    color: COLORS.BLUE
                 }} >{this.avatar}</Text>
             </View>
             <Text style={{ margin: 8, fontSize: 16 }} >

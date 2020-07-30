@@ -107,9 +107,9 @@ class FirebaseApi {
         return data;
     }
 
-    async shareLocation(chat_id, location) {
+    async shareLocation(chat_id,from_username, location) {
         await firebase.database().ref("chats").child(chat_id).push({
-            chat_id, location,
+            chat_id,from_username, location,
             date: moment().unix()
         })
     }

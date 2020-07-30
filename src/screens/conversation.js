@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native'
 import { IconButton, UserCard, Loading } from '../components';
 import firebaseApi from '../firebase';
 import { connect } from "react-redux";
+import { COLORS } from '../color';
 
 class ConversationScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -10,7 +11,7 @@ class ConversationScreen extends React.Component {
             title: "Chat App",
             headerLeft: () => (<IconButton
                 onPress={() => navigation.navigate('Userlist')}
-                name={"add"} size={36} iconStyle={{ color: 'blue' }} />)
+                name={"add"} size={36} iconStyle={{ color: COLORS.BLUE }} />)
         };
     };
 

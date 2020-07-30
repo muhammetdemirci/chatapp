@@ -2,26 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image } from "react-native";
 import moment from 'moment'
+import { COLORS } from '../../color';
+import { connect } from "react-redux";
 
 class MessageCard extends React.Component {
     render() {
-        const { date, from_username, message, image } = this.props.message
+        const { username, message: {
+            date, from_username, message, image
+        } } = this.props
+
+        const alignItems = username === from_username ? "flex-end" : "flex-start";
+        const msgBackgroundColor = username === from_username ? COLORS.GREEN : COLORS.BLUE
+
         return (<View style={{
             // marginHorizontal: 8,
             padding: 8,
             borderRadius: 8,
-            alignItems: 'flex-end'
+            alignItems,
+            marginHorizontal: 4,
         }}>
-            <Text style={{
-                color: 'black', fontSize: 16,
-                alignSelf: 'flex-end',
-                marginRight: 4,
-            }} >
-                {/* {from_username} */}
-            </Text>
             {
                 image ? <View style={{
-                    alignItems:'flex-end'
+                    // alignItems:'flex-end'
                 }} >
                     <Image
                         source={{ uri: image.uri }}
@@ -36,10 +38,9 @@ class MessageCard extends React.Component {
                 </View> : null
             }
             <View style={{
-                backgroundColor: 'blue',
+                backgroundColor: msgBackgroundColor,
                 padding: 8,
-                margin: 4,
-                // marginVertical: 4,
+                marginVertical: 4,
                 borderRadius: 8
             }} >
 
@@ -48,11 +49,10 @@ class MessageCard extends React.Component {
                 </Text>
             </View>
             <Text style={{
-                color: 'gray',
-                fontSize: 14,
-                alignSelf: 'flex-end'
+                color: COLORS.GRAY,
+                fontSize: 12,
             }} >
-                {moment.unix(date).fromNow()}
+                {moment.unix(date).format("HH:MM")}
             </Text>
         </View>)
     }
@@ -61,4 +61,10 @@ MessageCard.PropTypes = {
     message: PropTypes.object
 }
 
-export default MessageCard
+function mapStateToProps(state) {
+    return {
+        username: state.auth.username,
+    }
+}
+
+export default connect(mapStateToProps, {})(MessageCard);

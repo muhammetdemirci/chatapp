@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 class MainScreen extends React.Component {
 
   render() {
-
     if (this.props.is_user_logged_in)
       return (<AppNavigator />);
 

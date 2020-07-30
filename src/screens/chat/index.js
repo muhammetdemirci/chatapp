@@ -10,6 +10,7 @@ import MessageCard from "./messageCard";
 import ImagePicker from 'react-native-image-picker';
 import Geolocation from '@react-native-community/geolocation';
 import firebaseApi from '../../firebase';
+import { COLORS } from '../../color';
 
 const width = Dimensions.get("window").width
 
@@ -75,7 +76,9 @@ class ChatScreen extends React.Component {
         Geolocation.getCurrentPosition(
             position => {
                 const initialPosition = JSON.stringify(position);
-                firebaseApi.shareLocation(this.state.chat_id, initialPosition)
+                const { from_username } = this.props;
+
+                firebaseApi.shareLocation(this.state.chat_id, from_username, initialPosition)
                 console.warn(initialPosition)
             },
             error => Alert.alert('Error', JSON.stringify(error)),
@@ -160,7 +163,7 @@ class ChatScreen extends React.Component {
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                         <IconButton
                             onPress={() => this.handle_choose_image()}
-                            iconStyle={{ color: 'blue' }}
+                            iconStyle={{ color: COLORS.BLUE }}
                             size={30} name={'add'} />
                     </View>
                     <TextInput
@@ -178,7 +181,7 @@ class ChatScreen extends React.Component {
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                         <IconButton
                             onPress={() => this.onSend(this.state.message)}
-                            iconStyle={{ color: 'blue' }}
+                            iconStyle={{ color: COLORS.BLUE }}
                             size={30} name={'send'} />
                     </View>
                 </View>
