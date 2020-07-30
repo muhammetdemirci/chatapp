@@ -32,7 +32,7 @@ class UserListScreen extends React.Component {
         }} >
             {
                 this.state.users.map((data) =>
-                    <UserCard key={data.username} onPress={(data) => this.props.navigation.navigate('Chat', { data })}
+                    <UserCard key={data.username} onPress={(data) => this.props.navigation.navigate('Chat', { data, chat_id: data.chat_id })}
                         data={data} />)
             }
         </ScrollView>);

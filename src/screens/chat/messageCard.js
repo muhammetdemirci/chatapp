@@ -68,9 +68,6 @@ class MessageCard extends React.Component {
         </View>)
     }
 }
-MessageCard.PropTypes = {
-    message: PropTypes.object
-}
 
 function mapStateToProps(state) {
     return {
